@@ -1,0 +1,9 @@
+# common IDEs to be ignored
+.idea/
+.metals/
+.vscode/
+
+# build tool specific entries
+.bsp/
+.scala-build/
+out
