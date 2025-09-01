@@ -10,6 +10,11 @@ trait Common extends ScalaModule, SonatypeCentralPublishModule:
     "https://github.com/graalvm/oracle-graalvm-ea-builds/releases/download/jdk-25.0.0-ea.33/graalvm-jdk-25.0.0-ea.33_macos-aarch64_bin.tar.gz"
 
   def scalacOptions = Seq(
+    "-deprecation",
+    "-feature",
+    "-unchecked",
+    "-Wunused:all",
+//    "-Werror",
     "-experimental",
     "-source:future",
     "-language:experimental.modularity"

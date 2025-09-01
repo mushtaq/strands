@@ -1,6 +1,7 @@
 package strands.rpc.examples.actor
 
-import strands.rpc.{Client, Service}
+import strands.rpc.examples.actor.{BankAccount, BankAccountApi}
+import strands.rpc.*
 import sttp.client4.*
 import sttp.client4.testing.BackendStub
 import sttp.monad.IdentityMonad
@@ -9,8 +10,6 @@ import sttp.tapir.server.ServerEndpoint
 import sttp.tapir.server.stub4.TapirStubInterpreter
 import upickle.default.*
 import utest.*
-import strands.rpc.*
-import strands.rpc.examples.actor.{BankAccount, BankAccountApi}
 
 object ActorRpcTest extends TestSuite:
 
