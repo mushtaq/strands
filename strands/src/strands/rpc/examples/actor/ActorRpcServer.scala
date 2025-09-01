@@ -3,7 +3,7 @@ package strands.rpc.examples.actor
 import ox.*
 import strands.rpc.{Rpc, Service}
 
-object ActorRpcMain extends OxApp.Simple:
+object ActorRpcServer extends OxApp.Simple:
 
   def run(using Ox): Unit =
     Rpc.startServer(

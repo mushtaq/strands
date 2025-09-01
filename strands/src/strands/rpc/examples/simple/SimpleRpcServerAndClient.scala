@@ -7,7 +7,7 @@ import sttp.model.Uri.UriContext
 import sttp.shared.Identity
 import sttp.tapir.server.ServerEndpoint
 
-object SimpleRpcMain extends OxApp.Simple:
+object SimpleRpcServerAndClient extends OxApp.Simple:
 
   def run(using Ox): Unit =
     val serverEndpoints: List[ServerEndpoint[Any, Identity]] =  
