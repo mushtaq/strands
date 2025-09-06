@@ -1,12 +1,9 @@
 package strands.examples.actor
 
+import strands.examples.TestHelpers.backendStub
 import strands.examples.actor.{BankAccount, BankAccountApi}
 import strands.rpc.*
 import sttp.client4.*
-import sttp.client4.testing.StreamBackendStub
-import sttp.monad.IdentityMonad
-import sttp.tapir.server.ServerEndpoint
-import sttp.tapir.server.stub4.TapirStreamStubInterpreter
 import upickle.default.*
 import utest.*
 
@@ -15,13 +12,7 @@ object BankAccountRpcTest extends TestSuite:
     Tests:
       test("deposit and get balance"):
         ox.supervised:
-          val serverEndpoints: RpcEndpoints =
-            Service.actorEndpoints(BankAccount())
-
-          val backendStub: RpcBackend =
-            TapirStreamStubInterpreter(StreamBackendStub(IdentityMonad))
-              .whenServerEndpointsRunLogic(serverEndpoints)
-              .backend()
+          val backendStub: RpcBackend = Service.actorEndpoints(BankAccount()).backendStub()
 
           val request = basicRequest
             .post(uri"/deposit")
@@ -44,14 +35,7 @@ object BankAccountRpcTest extends TestSuite:
 
       test("deposit and get balance2"):
         ox.supervised:
-          val serverEndpoints: RpcEndpoints =
-            Service.actorEndpoints(BankAccount())
-
-          val backendStub: RpcBackend =
-            TapirStreamStubInterpreter(StreamBackendStub(IdentityMonad))
-              .whenServerEndpointsRunLogic(serverEndpoints)
-              .backend()
-
+          val backendStub: RpcBackend = Service.actorEndpoints(BankAccount()).backendStub()
           val bankAccount: Client[BankAccountApi] = Client.from[BankAccountApi](backend = backendStub)
 
           assert(bankAccount.deposit(100) == ())

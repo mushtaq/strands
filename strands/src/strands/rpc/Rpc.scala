@@ -10,7 +10,6 @@ import sttp.tapir.swagger.bundle.SwaggerInterpreter
 import scala.NamedTuple.NamedTuple as NT
 
 object Rpc:
-
   def startServer[N <: Tuple, V <: Tuple, API <: NT[N, V]](
       serverEndpoints: RpcEndpoints,
       port: Int,

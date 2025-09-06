@@ -1,30 +1,19 @@
 package strands.examples.simple
 
+import strands.examples.TestHelpers.backendStub
 import strands.examples.simple.SimpleModels.{Book, Timestamp, User, books}
 import strands.examples.simple.{SimpleApi, SimpleImpl}
-import strands.rpc.*
+import strands.rpc.{*, given}
 import sttp.client4.*
-import sttp.client4.testing.StreamBackendStub
-import sttp.monad.IdentityMonad
 import sttp.tapir.server.ServerEndpoint
 import sttp.tapir.server.netty.sync.OxStreams
-import sttp.tapir.server.stub4.TapirStreamStubInterpreter
 import upickle.default.*
 import utest.*
-import strands.rpc.given 
 
 import scala.concurrent.duration.DurationInt
 
 object SimpleRpcTest extends TestSuite:
-
-  val serverEndpoints: RpcEndpoints =
-    Service.simpleEndpoints(SimpleImpl())
-
-  val backendStub: RpcBackend =
-    TapirStreamStubInterpreter(StreamBackendStub(IdentityMonad))
-      .whenServerEndpointsRunLogic(serverEndpoints)
-      .backend()
-
+  val backendStub: RpcBackend = Service.simpleEndpoints(SimpleImpl()).backendStub()
   val simpleClient: Client[SimpleApi] = Client.from[SimpleApi](backend = backendStub)
 
   val tests = Tests:
@@ -67,7 +56,6 @@ object SimpleRpcTest extends TestSuite:
       val xs = response.body.asSseOf[Timestamp].take(3)
       xs.runForeach(println)
       assert(xs.runToList().size == 3)
-
 
     test("sse2"):
       val xs = simpleClient.ticks(100.millis).take(3)
