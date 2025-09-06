@@ -19,7 +19,7 @@ object ActorRpcServer extends OxApp.Simple:
 object ActorRpcClient extends OxApp.Simple:
 
   def run(using Ox): Unit =
-    val bankAccount: Client[BankAccountApi] = Client.from(baseUri = Some(uri"http://localhost:8081"))
+    val bankAccount: Client[BankAccountApi] = Client.of(uri"http://localhost:8081")
 
     println("******* Current Balance: " + bankAccount.getBalance())
 

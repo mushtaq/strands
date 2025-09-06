@@ -36,7 +36,7 @@ object BankAccountRpcTest extends TestSuite:
       test("deposit and get balance2"):
         ox.supervised:
           val backendStub: RpcBackend = Service.actorEndpoints(BankAccount()).backendStub()
-          val bankAccount: Client[BankAccountApi] = Client.from[BankAccountApi](backend = backendStub)
+          val bankAccount: Client[BankAccountApi] = Client.of[BankAccountApi](backendStub)
 
           assert(bankAccount.deposit(100) == ())
           assert(bankAccount.deposit(100) == ())

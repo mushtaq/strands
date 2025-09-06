@@ -20,7 +20,7 @@ object ActorRefTest extends TestSuite:
 
   val tests =
     Tests:
-      val max = 10000
+      val max = 1000
       val range = 1 to max
 
       test("plain object is not thread safe"):

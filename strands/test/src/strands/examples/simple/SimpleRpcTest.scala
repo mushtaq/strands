@@ -14,7 +14,7 @@ import scala.concurrent.duration.DurationInt
 
 object SimpleRpcTest extends TestSuite:
   val backendStub: RpcBackend = Service.simpleEndpoints(SimpleImpl()).backendStub()
-  val simpleClient: Client[SimpleApi] = Client.from[SimpleApi](backend = backendStub)
+  val simpleClient: Client[SimpleApi] = Client.of[SimpleApi](backendStub)
 
   val tests = Tests:
     test("return hello message"):

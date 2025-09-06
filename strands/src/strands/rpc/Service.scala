@@ -23,6 +23,7 @@ object Service:
     names
       .zip(functions)
       .map:
-        case (name, fn) =>
+        case (name, function) =>
           val endpoint = richEndpoints(name)
-          endpoint.service(fn.asInstanceOf, st).asInstanceOf[ServerEndpoint[OxStreams, Identity]]
+          val fn = function.asInstanceOf[endpoint.F]
+          endpoint.service(fn, st).asInstanceOf[ServerEndpoint[OxStreams, Identity]]

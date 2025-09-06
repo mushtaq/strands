@@ -18,8 +18,8 @@ class Client[API <: NamedTuple.AnyNamedTuple](
     endpoint.client
 
 object Client:
-  inline def from[API <: NamedTuple.AnyNamedTuple](
-      baseUri: Option[Uri] = None,
-      backend: RpcBackend = StreamingSyncBackend(DefaultSyncBackend())
-  ) =
-    new Client[API](EndpointFactory.from[API], baseUri, backend)
+  inline def of[API <: NamedTuple.AnyNamedTuple](baseUri: Uri): Client[API] =
+    Client[API](EndpointFactory.from[API], Some(baseUri), StreamingSyncBackend(DefaultSyncBackend()))
+
+  inline def of[API <: NamedTuple.AnyNamedTuple](backend: RpcBackend): Client[API] =
+    Client[API](EndpointFactory.from[API], None, backend)

@@ -16,7 +16,7 @@ object SimpleRpcServerAndClient extends OxApp.Simple:
     println()
     
     val simpleClient: Client[SimpleApi] =
-      Client.from[SimpleApi](baseUri = Some(uri"http://localhost:8080"))
+      Client.of[SimpleApi](uri"http://localhost:8080")
     
     println("********************" + simpleClient.hello(User("Mushtaq")))
     simpleClient.booksListing().foreach(x => println("****" + x))
