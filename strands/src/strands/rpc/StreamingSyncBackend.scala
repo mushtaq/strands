@@ -7,7 +7,7 @@ import sttp.monad.{IdentityMonad, MonadError}
 import sttp.shared.Identity
 import sttp.tapir.server.netty.sync.OxStreams
 
-class StreamingSyncBackend(delegate: SyncBackend) extends StreamBackend[Identity, OxStreams]:
+class StreamingSyncBackend(delegate: SyncBackend) extends RpcBackend:
 
   override val monad: MonadError[Identity] = IdentityMonad
 

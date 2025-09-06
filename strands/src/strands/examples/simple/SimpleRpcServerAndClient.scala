@@ -1,16 +1,14 @@
 package strands.examples.simple
 
 import ox.*
-import SimpleModels.User
-import strands.rpc.{Client, Rpc, Service}
+import strands.examples.simple.SimpleModels.User
+import strands.rpc.{Client, Rpc, RpcEndpoints, Service, given}
 import sttp.model.Uri.UriContext
-import sttp.shared.Identity
-import sttp.tapir.server.ServerEndpoint
 
 object SimpleRpcServerAndClient extends OxApp.Simple:
 
   def run(using Ox): Unit =
-    val serverEndpoints: List[ServerEndpoint[Any, Identity]] =  
+    val serverEndpoints: RpcEndpoints =
       Service.simpleEndpoints(SimpleImpl())
 
     Rpc.startServer(serverEndpoints, 8080, "simple-example", "0.1.0")

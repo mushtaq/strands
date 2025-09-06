@@ -4,27 +4,19 @@ import ox.Ox
 import ox.channels.{Actor, ActorRef}
 import sttp.shared.Identity
 import sttp.tapir.server.ServerEndpoint
+import sttp.tapir.server.netty.sync.OxStreams
 
 import scala.NamedTuple.NamedTuple as NT
 
 object Service:
-  inline def simpleEndpoints[N <: Tuple, V <: Tuple, API <: NT[N, V]](
-      api: API
-  ): List[ServerEndpoint[Any, Identity]] =
+  inline def simpleEndpoints[N <: Tuple, V <: Tuple, API <: NT[N, V]](api: API): RpcEndpoints =
+    endpoints(api, ServiceType.Simple)
 
-    serverEndpoints(api, ServiceType.Simple)
-
-  inline def actorEndpoints[N <: Tuple, V <: Tuple, API <: NT[N, V]](
-      api: API
-  )(using Ox): List[ServerEndpoint[Any, Identity]] =
-
+  inline def actorEndpoints[N <: Tuple, V <: Tuple, API <: NT[N, V]](api: API)(using Ox): RpcEndpoints =
     val actorRef: ActorRef[Any] = Actor.create(api)
-    serverEndpoints(api, ServiceType.Actor(actorRef))
+    endpoints(api, ServiceType.Actor(actorRef))
 
-  private inline def serverEndpoints[N <: Tuple, V <: Tuple, API <: NT[N, V]](
-      api: API,
-      serviceType: ServiceType
-  ) =
+  private inline def endpoints[N <: Tuple, V <: Tuple, API <: NT[N, V]](api: API, st: ServiceType): RpcEndpoints =
     val richEndpoints = EndpointFactory.from[API]
     val names = namesOf[API]
     val functions: List[Any] = api.toList
@@ -33,5 +25,4 @@ object Service:
       .map:
         case (name, fn) =>
           val endpoint = richEndpoints(name)
-          endpoint.service(fn.asInstanceOf, serviceType)
-
+          endpoint.service(fn.asInstanceOf, st).asInstanceOf[ServerEndpoint[OxStreams, Identity]]

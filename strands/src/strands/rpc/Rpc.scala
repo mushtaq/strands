@@ -12,7 +12,7 @@ import scala.NamedTuple.NamedTuple as NT
 object Rpc:
 
   def startServer[N <: Tuple, V <: Tuple, API <: NT[N, V]](
-      serverEndpoints: List[ServerEndpoint[Any, Identity]],
+      serverEndpoints: RpcEndpoints,
       port: Int,
       name: String,
       version: String
@@ -26,7 +26,7 @@ object Rpc:
     val docEndpoints: List[ServerEndpoint[Any, Identity]] =
       SwaggerInterpreter().fromServerEndpoints[Identity](serverEndpoints, s"$name-docs", version)
 
-    val allEndpoints: List[ServerEndpoint[Any, Identity]] =
+    val allEndpoints: RpcEndpoints =
       serverEndpoints ++ docEndpoints ++ List(metricsEndpoint)
 
     val serverOptions =
