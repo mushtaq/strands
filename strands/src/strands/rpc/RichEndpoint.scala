@@ -21,7 +21,7 @@ trait RichEndpoint:
   def adapt(f: F): I => O
 
   def service(f: F, serviceType: ServiceType): ServerEndpoint[R, Identity] =
-    e.handleSuccess(serviceType.adapt(adapt(f)))
+    e.handleSuccess(serviceType.wrap(adapt(f)))
 
 object RichEndpoint:
   case class F0[Out: Pickler](name: String) extends RichEndpoint:

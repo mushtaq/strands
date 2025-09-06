@@ -11,15 +11,16 @@ class EndpointFactory[F](val make: (name: String) => RichEndpoint)
 object EndpointFactory:
   given [O: Pickler] => EndpointFactory[() => O] = EndpointFactory(F0[O])
   given [I: Pickler, O: Pickler] => EndpointFactory[I => O] = EndpointFactory(F1[I, O])
+
   given fs0: [O: Pickler] => EndpointFactory[() => Flow[O]] = EndpointFactory(FS0[O])
   given fs1: [I: Pickler, O: Pickler] => EndpointFactory[I => Flow[O]] = EndpointFactory(FS1[I, O])
 
   inline def from[API <: NamedTuple.AnyNamedTuple]: Map[String, RichEndpoint] =
     type Fs = NamedTuple.DropNames[API]
-    type EPs = Tuple.Map[Fs, [f] =>> EndpointFactory[f]]
+    type EFs = Tuple.Map[Fs, [f] =>> EndpointFactory[f]]
 
     val names = namesOf[API]
-    val endpoints = summonAll[EPs].toList.asInstanceOf[List[EndpointFactory[?]]]
+    val endpoints = summonAll[EFs].toList.asInstanceOf[List[EndpointFactory[?]]]
     names
       .zip(endpoints)
       .toMap

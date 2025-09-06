@@ -35,7 +35,6 @@ object BankAccountRpcTest extends TestSuite:
 
           val request2 = basicRequest
             .post(uri"/getBalance")
-            .body(write(ujson.Obj()))
             .response(asJson[Int])
 
           println(request2.toCurl)

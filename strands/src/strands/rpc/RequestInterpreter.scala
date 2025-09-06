@@ -15,13 +15,18 @@ class RequestInterpreter(
 
   extension [I, E, O](e: PublicEndpoint[I, E, O, Any])
     def ask(input: I): O =
-      simpleInterpreter
-        .toRequestThrowErrors(e, baseUri)
-        .andThen: req =>
-          //        println(req.toCurl)
-          req.send(backend).body
-        .apply(input)
-
+      val reqF = simpleInterpreter.toRequestThrowErrors(e, baseUri)
+      backend.monad.map {
+        val req = reqF(input)
+        //        println(req.toCurl)
+        req.send(backend)
+      }(_.body)
 
   extension [I, E, O](e: PublicEndpoint[I, E, O, OxStreams])
-    def stream(input: I): O = streamInterpreter.toClientThrowErrors(e, baseUri, backend).apply(input)
+    def stream(input: I): O =
+      val reqF = streamInterpreter.toRequestThrowErrors[I, E, O, OxStreams](e, baseUri)
+      backend.monad.map {
+        val req = reqF(input)
+//        println(req.toCurl)
+        req.send(backend)
+      }(_.body)
