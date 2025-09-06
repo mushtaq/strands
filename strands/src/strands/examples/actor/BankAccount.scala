@@ -1,4 +1,4 @@
-package strands.rpc.examples.actor
+package strands.examples.actor
 
 type BankAccountApi = (
     getBalance: () => Int,

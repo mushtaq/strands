@@ -25,23 +25,13 @@ object Service:
       api: API,
       serviceType: ServiceType
   ) =
-    val endpointFactories = EndpointFactory.of[API]
+    val richEndpoints = EndpointFactory.from[API]
     val names = namesOf[API]
     val functions: List[Any] = api.toList
     names
       .zip(functions)
       .map:
         case (name, fn) =>
-          val endpointFactory = endpointFactories(name)
-          val endpoint = endpointFactory.create(name)
-          val serviceFn = endpointFactory.adaptFromApi(fn.asInstanceOf[endpointFactory.Fn])
-          val adaptedServiceFn = serviceType.adapt(serviceFn)
-          endpoint.handleSuccess(adaptedServiceFn)
+          val endpoint = richEndpoints(name)
+          endpoint.service(fn.asInstanceOf, serviceType)
 
-  private enum ServiceType:
-    case Simple
-    case Actor(actorRef: ActorRef[Any])
-
-    def adapt[I, O](f: I => O): I => O = this match
-      case Simple          => f
-      case Actor(actorRef) => x => actorRef.ask(_ => f(x))

@@ -1,6 +1,7 @@
-package strands.rpc.examples.simple
+package strands.examples.simple
 
-import strands.rpc.examples.simple.SimpleModels.{Book, User, books}
+import strands.examples.simple.{SimpleApi, SimpleImpl}
+import strands.examples.simple.SimpleModels.{Book, User, books}
 import strands.rpc.{Client, Service}
 import sttp.client4.*
 import sttp.client4.testing.BackendStub
@@ -12,7 +13,6 @@ import upickle.default.*
 import utest.*
 import strands.rpc.given
 import strands.rpc.*
-import strands.rpc.examples.simple.{SimpleApi, SimpleImpl}
 
 object SimpleRpcTest extends TestSuite:
 
@@ -44,7 +44,6 @@ object SimpleRpcTest extends TestSuite:
     test("list available books"):
       val request = basicRequest
         .post(uri"/booksListing")
-        .body(write(()))
         .response(asJson[List[Book]])
 
       println(request.toCurl)

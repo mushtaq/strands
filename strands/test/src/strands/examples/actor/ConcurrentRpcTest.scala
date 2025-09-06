@@ -1,8 +1,8 @@
-package strands.rpc.examples.actor
+package strands.examples.actor
 
 import ox.*
+import strands.examples.actor.{BankAccount, BankAccountApi}
 import strands.rpc.*
-import strands.rpc.examples.actor.{BankAccount, BankAccountApi}
 import sttp.client4.*
 import sttp.client4.testing.BackendStub
 import sttp.monad.IdentityMonad

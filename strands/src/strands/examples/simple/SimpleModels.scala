@@ -1,4 +1,4 @@
-package strands.rpc.examples.simple
+package strands.examples.simple
 
 import sttp.tapir.json.pickler.*
 

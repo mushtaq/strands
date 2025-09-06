@@ -1,4 +1,4 @@
-package strands.rpc.examples.actor
+package strands.examples.actor
 
 import strands.rpc.{Rpc, Service}
 import ox.*

@@ -1,7 +1,7 @@
-package strands.rpc.examples.simple
+package strands.examples.simple
 
 import ox.*
-import strands.rpc.examples.simple.SimpleModels.User
+import SimpleModels.User
 import strands.rpc.{Client, Rpc, Service}
 import sttp.model.Uri.UriContext
 import sttp.shared.Identity
