@@ -8,5 +8,6 @@ import scala.concurrent.duration.FiniteDuration
 type SimpleApi = (
     hello: (user: User) => String,
     booksListing: () => List[Book],
-    ticks: (interval: FiniteDuration) => Flow[Timestamp]
+    ticks: (interval: FiniteDuration) => Flow[Timestamp],
+    ticks2: () => Flow[Timestamp]
 )

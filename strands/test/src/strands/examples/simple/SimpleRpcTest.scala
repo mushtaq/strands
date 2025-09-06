@@ -44,7 +44,7 @@ object SimpleRpcTest extends TestSuite:
     test("list available books2"):
       assert(simpleClient.booksListing() == books)
 
-    test("sse"):
+    test("ticks"):
       val request = basicRequest
         .get(uri"/ticks")
         .body(write(100.millis))
@@ -57,7 +57,24 @@ object SimpleRpcTest extends TestSuite:
       xs.runForeach(println)
       assert(xs.runToList().size == 3)
 
-    test("sse2"):
+    test("ticks with client"):
       val xs = simpleClient.ticks(100.millis).take(3)
+      xs.runForeach(println)
+      assert(xs.runToList().size == 3)
+
+    test("ticks2"):
+      val request = basicRequest
+        .get(uri"/ticks2")
+        .response(asStreamAlwaysUnsafe(OxStreams))
+
+      println(request.toCurl)
+      val response = request.send(backendStub)
+
+      val xs = response.body.asSseOf[Timestamp].take(3)
+      xs.runForeach(println)
+      assert(xs.runToList().size == 3)
+
+    test("ticks with client"):
+      val xs = simpleClient.ticks2().take(3)
       xs.runForeach(println)
       assert(xs.runToList().size == 3)
