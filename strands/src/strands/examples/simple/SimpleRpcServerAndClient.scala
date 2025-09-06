@@ -2,8 +2,9 @@ package strands.examples.simple
 
 import ox.*
 import strands.examples.simple.SimpleModels.User
-import strands.rpc.{Client, Rpc, RpcEndpoints, Service, given}
+import strands.rpc.{Client, Rpc, RpcEndpoints, Service}
 import sttp.model.Uri.UriContext
+import strands.rpc.RpcHelpers.given
 
 object SimpleRpcServerAndClient extends OxApp.Simple:
 

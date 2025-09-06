@@ -6,6 +6,7 @@ import sttp.tapir.*
 import sttp.tapir.json.pickler.{Pickler, jsonBody}
 import sttp.tapir.server.ServerEndpoint
 import sttp.tapir.server.netty.sync.{OxStreams, serverSentEventsBody}
+import RpcHelpers.given 
 
 trait RichEndpoint:
   type I
@@ -60,7 +61,7 @@ object RichEndpoint:
 
     val e: E = endpoint.get
       .in(name)
-      .out(serverSentEventsBody.map(sseMapping[Out]))
+      .out(serverSentEventsBody.map(RpcHelpers.sseMapping[Out]))
 
     def client(using RequestInterpreter): F = () => e.stream(())
     def adapt(f: F): I => O = _ => f()
@@ -74,7 +75,7 @@ object RichEndpoint:
     val e: E = endpoint.get
       .in(name)
       .in(jsonBody[I])
-      .out(serverSentEventsBody.map(sseMapping[Out]))
+      .out(serverSentEventsBody.map(RpcHelpers.sseMapping[Out]))
 
     def client(using RequestInterpreter): F = e.stream
     def adapt(f: F): I => O = f

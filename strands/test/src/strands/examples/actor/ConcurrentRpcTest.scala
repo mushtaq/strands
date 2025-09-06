@@ -15,8 +15,8 @@ object ConcurrentRpcTest extends TestSuite:
       val bankAccount: Client[BankAccountApi] = Client.of[BankAccountApi](backendStub)
 
       par:
-        (1 to 1000)
-          .map(_ => () => bankAccount.deposit(1))
+        (1 to 1000).map: _ =>
+          () => bankAccount.deposit(1)
 
       assert:
         bankAccount.getBalance() != 1000
@@ -27,8 +27,8 @@ object ConcurrentRpcTest extends TestSuite:
         val bankAccount: Client[BankAccountApi] = Client.of[BankAccountApi](backendStub)
 
         par:
-          (1 to 1000)
-            .map(_ => () => bankAccount.deposit(1))
+          (1 to 1000).map: _ =>
+            () => bankAccount.deposit(1)
 
         assert:
           bankAccount.getBalance() == 1000

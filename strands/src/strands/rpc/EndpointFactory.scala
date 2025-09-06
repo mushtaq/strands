@@ -19,7 +19,7 @@ object EndpointFactory:
     type Fs = NamedTuple.DropNames[API]
     type EFs = Tuple.Map[Fs, [f] =>> EndpointFactory[f]]
 
-    val names = namesOf[API]
+    val names = RpcHelpers.namesOf[API]
     val endpoints = summonAll[EFs].toList.asInstanceOf[List[EndpointFactory[?]]]
     names
       .zip(endpoints)

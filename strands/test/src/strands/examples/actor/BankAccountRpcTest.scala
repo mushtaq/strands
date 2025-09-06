@@ -13,11 +13,20 @@ object BankAccountRpcTest extends TestSuite:
       test("deposit and get balance"):
         ox.supervised:
           val backendStub: RpcBackend = Service.actorEndpoints(BankAccount()).backendStub()
+          val bankAccount: Client[BankAccountApi] = Client.of[BankAccountApi](backendStub)
+
+          assert(bankAccount.deposit(100) == ())
+          assert(bankAccount.deposit(100) == ())
+          assert(bankAccount.getBalance() == 200)
+
+      test("deposit and get balance2"):
+        ox.supervised:
+          val backendStub: RpcBackend = Service.actorEndpoints(BankAccount()).backendStub()
 
           val request = basicRequest
             .post(uri"/deposit")
             .body(write(100))
-            .response(asJson[Unit])
+            .response(RpcHelpers.asJson[Unit])
 
           println(request.toCurl)
           val response = request.send(backendStub)
@@ -26,18 +35,9 @@ object BankAccountRpcTest extends TestSuite:
 
           val request2 = basicRequest
             .post(uri"/getBalance")
-            .response(asJson[Int])
+            .response(RpcHelpers.asJson[Int])
 
           println(request2.toCurl)
           val response2 = request2.send(backendStub)
 
           assert(response2.body == 100)
-
-      test("deposit and get balance2"):
-        ox.supervised:
-          val backendStub: RpcBackend = Service.actorEndpoints(BankAccount()).backendStub()
-          val bankAccount: Client[BankAccountApi] = Client.of[BankAccountApi](backendStub)
-
-          assert(bankAccount.deposit(100) == ())
-          assert(bankAccount.deposit(100) == ())
-          assert(bankAccount.getBalance() == 200)

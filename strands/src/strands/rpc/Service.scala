@@ -18,7 +18,7 @@ object Service:
 
   private inline def endpoints[N <: Tuple, V <: Tuple, API <: NT[N, V]](api: API, st: ServiceType): RpcEndpoints =
     val richEndpoints = EndpointFactory.from[API]
-    val names = namesOf[API]
+    val names = RpcHelpers.namesOf[API]
     val functions: List[Any] = api.toList
     names
       .zip(functions)
