@@ -1,5 +1,7 @@
 package strands.rpc
 
+import strands.rpc.common.RpcBackend
+import strands.rpc.internal.{EndpointFactory, RequestInterpreter, RichEndpoint, StreamingSyncBackend}
 import sttp.client4.DefaultSyncBackend
 import sttp.model.Uri
 

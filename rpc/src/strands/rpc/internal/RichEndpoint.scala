@@ -1,6 +1,7 @@
-package strands.rpc
+package strands.rpc.internal
 
 import ox.flow.Flow
+import strands.rpc.common.RpcHelpers
 import sttp.shared.Identity
 import sttp.tapir.*
 import sttp.tapir.json.pickler.{Pickler, jsonBody}

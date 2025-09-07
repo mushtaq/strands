@@ -1,7 +1,8 @@
-package strands.rpc
+package strands.rpc.internal
 
 import ox.flow.Flow
-import strands.rpc.RichEndpoint.{F0, F1, FS0, FS1}
+import strands.rpc.common.RpcHelpers
+import strands.rpc.internal.RichEndpoint.{F0, F1, FS0, FS1}
 import sttp.tapir.json.pickler.Pickler
 
 import scala.compiletime.summonAll

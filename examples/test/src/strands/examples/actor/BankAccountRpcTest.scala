@@ -3,6 +3,7 @@ package strands.examples.actor
 import strands.examples.TestHelpers.backendStub
 import strands.examples.actor.{BankAccount, BankAccountApi}
 import strands.rpc.*
+import strands.rpc.common.{RpcBackend, RpcHelpers}
 import sttp.client4.*
 import upickle.default.*
 import utest.*

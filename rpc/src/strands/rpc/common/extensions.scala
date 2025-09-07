@@ -1,14 +1,14 @@
-package strands.rpc
+package strands.rpc.common
 
 import ox.Chunk
 import ox.flow.Flow
 import sttp.client4.{ResponseAs, StreamBackend, asInputStreamAlways}
 import sttp.model.sse.ServerSentEvent
 import sttp.shared.Identity
-import sttp.tapir.{Mapping, Schema}
 import sttp.tapir.json.pickler.Pickler
 import sttp.tapir.server.ServerEndpoint
 import sttp.tapir.server.netty.sync.OxStreams
+import sttp.tapir.{Mapping, Schema}
 import upickle.default.*
 
 import scala.compiletime.constValueTuple

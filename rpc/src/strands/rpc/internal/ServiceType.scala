@@ -1,4 +1,4 @@
-package strands.rpc
+package strands.rpc.internal
 
 import ox.channels.ActorRef
 

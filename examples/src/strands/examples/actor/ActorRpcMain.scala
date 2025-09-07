@@ -1,6 +1,6 @@
 package strands.examples.actor
 
-import strands.rpc.{Rpc, Service}
+import strands.rpc.{RpcServer, Service}
 import ox.*
 import strands.rpc.Client
 import sttp.model.Uri.UriContext
@@ -8,7 +8,7 @@ import sttp.model.Uri.UriContext
 object ActorRpcServer extends OxApp.Simple:
 
   def run(using Ox): Unit =
-    Rpc.startServer(
+    RpcServer.start(
       Service.actorEndpoints(BankAccount()),
       port = 8081,
       name = "actor-example",

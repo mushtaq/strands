@@ -2,9 +2,10 @@ package strands.examples.simple
 
 import ox.*
 import strands.examples.simple.SimpleModels.User
-import strands.rpc.{Client, Rpc, RpcEndpoints, Service}
+import strands.rpc.{Client, RpcServer, Service}
 import sttp.model.Uri.UriContext
-import strands.rpc.RpcHelpers.given
+import strands.rpc.common.RpcHelpers.given
+import strands.rpc.common.RpcEndpoints
 
 object SimpleRpcMain extends OxApp.Simple:
 
@@ -12,7 +13,7 @@ object SimpleRpcMain extends OxApp.Simple:
     val serverEndpoints: RpcEndpoints =
       Service.simpleEndpoints(SimpleImpl())
 
-    Rpc.startServer(serverEndpoints, 8080, "simple-example", "0.1.0")
+    RpcServer.start(serverEndpoints, 8080, "simple-example", "0.1.0")
 
     println()
     

@@ -1,5 +1,6 @@
-package strands.rpc
+package strands.rpc.internal
 
+import strands.rpc.common.RpcBackend
 import sttp.model.Uri
 import sttp.tapir.PublicEndpoint
 import sttp.tapir.client.sttp4.SttpClientInterpreter

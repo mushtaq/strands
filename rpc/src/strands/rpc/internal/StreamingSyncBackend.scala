@@ -1,5 +1,6 @@
-package strands.rpc
+package strands.rpc.internal
 
+import strands.rpc.common.RpcBackend
 import sttp.capabilities.Effect
 import sttp.client4.*
 import sttp.client4.impl.ox.sse.OxServerSentEvents

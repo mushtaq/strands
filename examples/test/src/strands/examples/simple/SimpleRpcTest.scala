@@ -3,8 +3,9 @@ package strands.examples.simple
 import strands.examples.TestHelpers.backendStub
 import strands.examples.simple.SimpleModels.{Book, Timestamp, User, books}
 import strands.examples.simple.{SimpleApi, SimpleImpl}
-import strands.rpc.{Client, RpcBackend, RpcHelpers, Service}
-import strands.rpc.RpcHelpers.{asSseOf, given}
+import strands.rpc.{Client, Service}
+import strands.rpc.common.RpcHelpers.{asSseOf, given}
+import strands.rpc.common.{RpcBackend, RpcHelpers}
 import sttp.client4.*
 import sttp.tapir.server.ServerEndpoint
 import sttp.tapir.server.netty.sync.OxStreams

@@ -1,6 +1,6 @@
 package strands.examples
 
-import strands.rpc.{RpcBackend, RpcEndpoints}
+import strands.rpc.common.{RpcBackend, RpcEndpoints}
 import sttp.client4.testing.StreamBackendStub
 import sttp.monad.IdentityMonad
 import sttp.tapir.server.stub4.TapirStreamStubInterpreter

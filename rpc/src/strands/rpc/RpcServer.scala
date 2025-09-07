@@ -1,6 +1,7 @@
 package strands.rpc
 
 import ox.*
+import strands.rpc.common.RpcEndpoints
 import sttp.shared.Identity
 import sttp.tapir.server.ServerEndpoint
 import sttp.tapir.server.metrics.prometheus.PrometheusMetrics
@@ -9,8 +10,8 @@ import sttp.tapir.swagger.bundle.SwaggerInterpreter
 
 import scala.NamedTuple.NamedTuple as NT
 
-object Rpc:
-  def startServer[N <: Tuple, V <: Tuple, API <: NT[N, V]](
+object RpcServer:
+  def start[N <: Tuple, V <: Tuple, API <: NT[N, V]](
       serverEndpoints: RpcEndpoints,
       port: Int,
       name: String,
