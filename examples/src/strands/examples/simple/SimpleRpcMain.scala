@@ -6,7 +6,7 @@ import strands.rpc.{Client, Rpc, RpcEndpoints, Service}
 import sttp.model.Uri.UriContext
 import strands.rpc.RpcHelpers.given
 
-object SimpleRpcServerAndClient extends OxApp.Simple:
+object SimpleRpcMain extends OxApp.Simple:
 
   def run(using Ox): Unit =
     val serverEndpoints: RpcEndpoints =

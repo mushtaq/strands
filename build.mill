@@ -31,9 +31,9 @@ trait Common extends ScalaModule, SonatypeCentralPublishModule:
 
   // publish.organization + minimal POM metadata
   def pomSettings = PomSettings(
-    description = "tapir-ox",
-    organization = "com.example",
-    url = "https://example.com/tapir-ox",
+    description = "strands library",
+    organization = "org.github.mushtaq.strands",
+    url = "https://github.com/mushtaq/strands",
     licenses = Seq(License.MIT),
     // Fill these in later if/when you host the code (e.g. VersionControl.github("org","repo"))
     versionControl = VersionControl(None, None, None, None),
@@ -51,7 +51,7 @@ trait Common extends ScalaModule, SonatypeCentralPublishModule:
 
     def testFramework = "utest.runner.Framework"
 
-object strands extends Common:
+object rpc extends Common:
 
   def mvnDeps = Seq(
     mvn"com.softwaremill.sttp.tapir::tapir-netty-server-sync:1.11.43",
@@ -63,16 +63,32 @@ object strands extends Common:
     mvn"com.softwaremill.sttp.client4::ox:4.0.10"
   )
 
-  def artifactName = "strands"
-
-  def pomSettings = super
-    .pomSettings()
-    .copy(
-      description = "strands library"
-    )
+  def artifactName = "strands-rpc"
 
   object test extends TestCommon:
     def mvnDeps = super.mvnDeps() ++ Seq(
       mvn"com.softwaremill.sttp.tapir::tapir-sttp-stub4-server:1.11.43",
       mvn"com.softwaremill.sttp.client3::upickle:3.11.0"
     )
+
+object examples extends Common:
+  def mvnDeps = super.mvnDeps
+
+  def moduleDeps: Seq[PublishModule] = Seq(rpc)
+
+  def artifactName = "strands-examples"
+
+  object test extends TestCommon:
+    def mvnDeps = super.mvnDeps() ++ Seq(
+      mvn"com.softwaremill.sttp.tapir::tapir-sttp-stub4-server:1.11.43",
+      mvn"com.softwaremill.sttp.client3::upickle:3.11.0"
+    )
+
+object experimental extends Common:
+  def mvnDeps = super.mvnDeps() ++ Seq()
+
+  def artifactName = "strands-experimental"
+
+  object test extends TestCommon:
+    def mvnDeps = super.mvnDeps() ++ Seq()
+

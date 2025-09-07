@@ -7,7 +7,7 @@ import sttp.tapir.client.sttp4.stream.StreamSttpClientInterpreter
 import sttp.tapir.server.netty.sync.OxStreams
 
 class RequestInterpreter(
-    baseUri: Option[Uri] = None,
+    baseUri: Option[Uri],
     backend: RpcBackend
 ):
   protected val simpleInterpreter: SttpClientInterpreter = SttpClientInterpreter()

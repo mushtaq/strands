@@ -1,9 +1,17 @@
 package strands.examples.simple
 
-import SimpleModels.*
 import ox.flow.Flow
+import strands.examples.simple.SimpleModels.*
 
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
+
+type SimpleApi = (
+    hello: (user: User) => String,
+    booksListing: () => List[Book],
+    ticks: (interval: FiniteDuration) => Flow[Timestamp],
+    ticks2: () => Flow[Timestamp]
+)
+
 
 def SimpleImpl(): SimpleApi = {
   def tick(interval: FiniteDuration) = Flow.tick(interval).map(_ => Timestamp.now())
