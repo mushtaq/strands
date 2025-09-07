@@ -7,10 +7,12 @@ import strands.rpc.{Client, Service}
 import strands.rpc.common.RpcHelpers.{asSseOf, given}
 import strands.rpc.common.{RpcBackend, RpcHelpers}
 import sttp.client4.*
+import sttp.client4.upicklejson.default.*
 import sttp.tapir.server.ServerEndpoint
 import sttp.tapir.server.netty.sync.OxStreams
-import upickle.default.*
+import upickle.*
 import utest.*
+import sttp.tapir.generic.auto.*
 
 import scala.concurrent.duration.DurationInt
 
@@ -26,7 +28,7 @@ object SimpleRpcTest extends TestSuite:
       val request = basicRequest
         .post(uri"/hello")
         .body(write(User("Mushtaq")))
-        .response(RpcHelpers.asJson[String])
+        .response(asJsonOrFail[String])
 
       println(request.toCurl)
       val response = request.send(backendStub)
@@ -39,7 +41,7 @@ object SimpleRpcTest extends TestSuite:
     test("list available books"):
       val request = basicRequest
         .post(uri"/booksListing")
-        .response(RpcHelpers.asJson[List[Book]])
+        .response(asJsonOrFail[List[Book]])
 
       println(request.toCurl)
       val response = request.send(backendStub)

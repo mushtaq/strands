@@ -3,8 +3,9 @@ package strands.examples.actor
 import strands.examples.TestHelpers.backendStub
 import strands.examples.actor.{BankAccount, BankAccountApi}
 import strands.rpc.*
-import strands.rpc.common.{RpcBackend, RpcHelpers}
+import strands.rpc.common.RpcBackend
 import sttp.client4.*
+import sttp.client4.upicklejson.default.asJsonOrFail
 import upickle.default.*
 import utest.*
 
@@ -27,7 +28,7 @@ object BankAccountRpcTest extends TestSuite:
           val request = basicRequest
             .post(uri"/deposit")
             .body(write(100))
-            .response(RpcHelpers.asJson[Unit])
+            .response(asJsonOrFail[Unit])
 
           println(request.toCurl)
           val response = request.send(backendStub)
@@ -36,7 +37,7 @@ object BankAccountRpcTest extends TestSuite:
 
           val request2 = basicRequest
             .post(uri"/getBalance")
-            .response(RpcHelpers.asJson[Int])
+            .response(asJsonOrFail[Int])
 
           println(request2.toCurl)
           val response2 = request2.send(backendStub)

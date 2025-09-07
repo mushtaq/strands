@@ -4,10 +4,9 @@ import ox.flow.Flow
 import strands.rpc.common.RpcHelpers
 import sttp.shared.Identity
 import sttp.tapir.*
-import sttp.tapir.json.pickler.{Pickler, jsonBody}
 import sttp.tapir.server.ServerEndpoint
 import sttp.tapir.server.netty.sync.{OxStreams, serverSentEventsBody}
-import RpcHelpers.given 
+import upickle.ReadWriter
 
 trait RichEndpoint:
   type I
@@ -26,7 +25,7 @@ trait RichEndpoint:
     e.handleSuccess(serviceType.wrap(adapt(f)))
 
 object RichEndpoint:
-  case class F0[Out: Pickler](name: String) extends RichEndpoint:
+  case class F0[Out: {ReadWriter, Schema}](name: String) extends RichEndpoint:
     type I = Unit
     type O = Out
     type R = Any
@@ -34,12 +33,12 @@ object RichEndpoint:
 
     val e: E = endpoint.post
       .in(name)
-      .out(jsonBody[O])
+      .out(RpcHelpers.jsonBody[O])
 
     def client(using RequestInterpreter): F = () => e.ask(())
     def adapt(f: F): I => O = _ => f()
 
-  case class F1[In: Pickler, Out: Pickler](name: String) extends RichEndpoint:
+  case class F1[In: {ReadWriter, Schema}, Out: {ReadWriter, Schema}](name: String) extends RichEndpoint:
     type I = In
     type O = Out
     type R = Any
@@ -47,14 +46,14 @@ object RichEndpoint:
 
     val e: E = endpoint.post
       .in(name)
-      .in(jsonBody[I])
-      .out(jsonBody[O])
+      .in(RpcHelpers.jsonBody[I])
+      .out(RpcHelpers.jsonBody[O])
 
     def client(using RequestInterpreter): F = e.ask
 
     override def adapt(f: F): I => O = f
 
-  case class FS0[Out: Pickler](name: String) extends RichEndpoint:
+  case class FS0[Out: ReadWriter](name: String) extends RichEndpoint:
     type I = Unit
     type O = Flow[Out]
     type R = OxStreams
@@ -67,7 +66,7 @@ object RichEndpoint:
     def client(using RequestInterpreter): F = () => e.stream(())
     def adapt(f: F): I => O = _ => f()
 
-  case class FS1[In: Pickler, Out: Pickler](name: String) extends RichEndpoint:
+  case class FS1[In: {ReadWriter, Schema}, Out: ReadWriter](name: String) extends RichEndpoint:
     type I = In
     type O = Flow[Out]
     type R = OxStreams
@@ -75,7 +74,7 @@ object RichEndpoint:
 
     val e: E = endpoint.get
       .in(name)
-      .in(jsonBody[I])
+      .in(RpcHelpers.jsonBody[I])
       .out(serverSentEventsBody.map(RpcHelpers.sseMapping[Out]))
 
     def client(using RequestInterpreter): F = e.stream

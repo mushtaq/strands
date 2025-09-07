@@ -1,15 +1,15 @@
 package strands.examples.simple
 
-import sttp.tapir.json.pickler.*
+import upickle.ReadWriter
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 object SimpleModels:
-  case class User(name: String) derives Pickler
-  case class Author(name: String) derives Pickler
-  case class Book(title: String, year: Int, author: Author) derives Pickler
-  case class Timestamp(value: String) derives Pickler
+  case class User(name: String) derives ReadWriter
+  case class Author(name: String) derives ReadWriter
+  case class Book(title: String, year: Int, author: Author) derives ReadWriter
+  case class Timestamp(value: String) derives ReadWriter
 
   object Timestamp:
     def now(): Timestamp =
