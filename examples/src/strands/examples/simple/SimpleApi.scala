@@ -10,9 +10,8 @@ type SimpleApi = (
     booksListing: () => List[Book],
     ticks: (interval: FiniteDuration) => Flow[Timestamp],
     ticks2: () => Flow[Timestamp],
-//    join: (parts: (first: String, second: String)) => String
+    join: (parts: (first: String, second: String)) => String
 )
-
 
 def SimpleImpl(): SimpleApi = {
   def tick(interval: FiniteDuration) = Flow.tick(interval).map(_ => Timestamp.now())
@@ -22,6 +21,6 @@ def SimpleImpl(): SimpleApi = {
     booksListing = () => SimpleModels.books,
     ticks = (interval: FiniteDuration) => tick(interval),
     ticks2 = () => tick(100.millis),
-//    join = (parts: (first: String, second: String)) => parts.first + " " + parts.second
+    join = (parts: (first: String, second: String)) => parts.first + " " + parts.second
   )
 }

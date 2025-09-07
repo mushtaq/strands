@@ -5,7 +5,7 @@ import strands.examples.actor.{BankAccount, BankAccountApi}
 import strands.rpc.*
 import strands.rpc.common.RpcBackend
 import sttp.client4.*
-import sttp.client4.upicklejson.default.asJsonOrFail
+import sttp.client4.upicklejson.default.{asJson, asJsonOrFail}
 import upickle.default.*
 import utest.*
 
@@ -27,7 +27,7 @@ object BankAccountRpcTest extends TestSuite:
 
           val request = basicRequest
             .post(uri"/deposit")
-            .body(write(100))
+            .body(asJson(100))
             .response(asJsonOrFail[Unit])
 
           println(request.toCurl)

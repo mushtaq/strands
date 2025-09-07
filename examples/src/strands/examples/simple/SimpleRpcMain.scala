@@ -7,6 +7,7 @@ import sttp.model.Uri.UriContext
 import strands.rpc.common.RpcHelpers.given
 import strands.rpc.common.RpcEndpoints
 import sttp.tapir.generic.auto.*
+import upickle.implicits.namedTuples.default.given
 
 object SimpleRpcMain extends OxApp.Simple:
 

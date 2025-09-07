@@ -10,9 +10,9 @@ import sttp.client4.*
 import sttp.client4.upicklejson.default.*
 import sttp.tapir.server.ServerEndpoint
 import sttp.tapir.server.netty.sync.OxStreams
-import upickle.*
 import utest.*
 import sttp.tapir.generic.auto.*
+import upickle.implicits.namedTuples.default.given
 
 import scala.concurrent.duration.DurationInt
 
@@ -27,7 +27,7 @@ object SimpleRpcTest extends TestSuite:
     test("return hello message"):
       val request = basicRequest
         .post(uri"/hello")
-        .body(write(User("Mushtaq")))
+        .body(asJson(User("Mushtaq")))
         .response(asJsonOrFail[String])
 
       println(request.toCurl)
@@ -56,7 +56,7 @@ object SimpleRpcTest extends TestSuite:
     test("ticks"):
       val request = basicRequest
         .get(uri"/ticks")
-        .body(write(100.millis))
+        .body(asJson(100.millis))
         .response(asStreamAlwaysUnsafe(OxStreams))
 
       println(request.toCurl)
@@ -82,3 +82,17 @@ object SimpleRpcTest extends TestSuite:
       val xs = response.body.asSseOf[Timestamp].take(3)
       xs.runForeach(println)
       assert(xs.runToList().size == 3)
+
+    test("join with client"):
+      assert(simpleClient.join(first = "Mushtaq", second = "Ahmed") == "Mushtaq Ahmed")
+
+    test("join"):
+      val request = basicRequest
+        .post(uri"/join")
+        .body(asJson((first = "Mushtaq", second = "Ahmed")))
+        .response(asJsonOrFail[String])
+
+      println(request.toCurl)
+      val response = request.send(backendStub)
+
+      assert(response.body == "Mushtaq Ahmed")
